@@ -1,13 +1,11 @@
 FROM n8nio/n8n:latest
 
-# mudar para root temporariamente
+# Mudar para root para instalar pacotes
 USER root
 
-# instalar yt-dlp + ffmpeg
-RUN apt-get update && apt-get install -y python3-pip ffmpeg \
-    && pip3 install --no-cache-dir yt-dlp \
-    && rm -rf /var/lib/apt/lists/*
+# Instalar ffmpeg e pip usando o apk do Alpine, depois o yt-dlp
+RUN apk update && apk add --no-cache ffmpeg py3-pip \
+    && pip3 install --no-cache-dir yt-dlp
 
-# voltar para o usuário padrão do n8n
+# Voltar para o usuário padrão do n8n
 USER node
-
