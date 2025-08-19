@@ -1,4 +1,4 @@
-FROM n8nio/n8n:latest
+FROM n8nio/n8n:1.107.3
 
 # Mudar para root para instalar pacotes
 USER root
