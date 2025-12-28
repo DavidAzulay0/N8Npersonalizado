@@ -9,7 +9,5 @@ RUN mkdir -p /data && chown -R node:node /data
 
 USER node
 
-VOLUME /data
-
 EXPOSE 5678
 CMD ["n8n"]
