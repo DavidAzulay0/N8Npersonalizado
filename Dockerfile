@@ -1,10 +1,15 @@
-FROM n8nio/n8n:1.107.3
+FROM n8nio/n8n:latest
 
-# Mudar para root para instalar pacotes
 USER root
 
-# Instalar ffmpeg e yt-dlp diretamente com o apk
-RUN apk update && apk add --no-cache ffmpeg yt-dlp
+RUN apk add --no-cache python3 py3-pip ffmpeg \
+    && pip3 install yt-dlp
 
-# Voltar para o usuário padrão do n8n
+RUN mkdir -p /data && chown -R node:node /data
+
 USER node
+
+VOLUME /data
+
+EXPOSE 5678
+CMD ["n8n"]
