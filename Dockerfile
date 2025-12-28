@@ -1,6 +1,8 @@
-FROM node:20-bookworm-slim
+FROM n8nio/n8n:latest
 
-# Dependências do sistema
+USER root
+
+# Dependências para yt-dlp
 RUN apt-get update \
     && apt-get install -y \
         ffmpeg \
@@ -11,19 +13,10 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Garantir que pipx esteja no PATH
 ENV PATH="/root/.local/bin:$PATH"
 
-# Instalar yt-dlp via pipx (CORRETO no Debian 12)
+# Instalar yt-dlp
 RUN pipx install yt-dlp
 
-# Instalar n8n
-RUN npm install -g n8n
-
-ENV NODE_ENV=production
-ENV N8N_PORT=5678
-
-EXPOSE 5678
-
-CMD ["node", "/usr/local/lib/node_modules/n8n/bin/n8n.js", "start"]
+USER node
 
