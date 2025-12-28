@@ -22,4 +22,4 @@ ENV N8N_PORT=5678
 ENV N8N_USER_FOLDER=/root/.n8n
 
 EXPOSE 5678
-CMD ["sh", "-c", "n8n start --host 0.0.0.0 --port $PORT"]
+CMD ["node", "/usr/local/lib/node_modules/n8n/bin/n8n.js", "start", "--host", "0.0.0.0", "--port", "$PORT"]
