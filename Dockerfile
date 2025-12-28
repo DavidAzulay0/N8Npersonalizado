@@ -22,6 +22,4 @@ ENV N8N_PORT=5678
 ENV N8N_USER_FOLDER=/root/.n8n
 
 EXPOSE 5678
-CMD ["sh", "-c", "chown -R root:root /root/.n8n && n8n start --port $PORT --host 0.0.0.0"]
-
-
+CMD ["sh", "-c", "n8n start --port $PORT --host 0.0.0.0"]
