@@ -1,4 +1,4 @@
-FROM n8nio/n8n:latest-debian
+FROM n8nio/n8n:latest-bookworm
 
 USER root
 
@@ -15,7 +15,7 @@ RUN apt-get update \
 
 ENV PATH="/root/.local/bin:$PATH"
 
+# yt-dlp é necessário para o workflow
 RUN pipx install yt-dlp
 
 USER node
-
