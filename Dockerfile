@@ -1,18 +1,26 @@
-# ===== Stage 1: baixar yt-dlp =====
-FROM alpine:3.19 AS ytdlp
+FROM node:20-bookworm
 
-RUN apk add --no-cache curl \
-    && curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp \
-        -o /yt-dlp \
-    && chmod +x /yt-dlp
+# Dependências do sistema
+RUN apt-get update \
+    && apt-get install -y python3 python3-pip ffmpeg \
+    && pip3 install --no-cache-dir yt-dlp \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
+# Instala n8n
+RUN npm install -g n8n
 
-# ===== Stage 2: n8n oficial =====
-FROM n8nio/n8n:stable
+# Diretórios obrigatórios
+RUN mkdir -p /data /root/.n8n
 
-USER root
+# Variáveis críticas
+ENV N8N_PORT=5678
+ENV N8N_LISTEN_ADDRESS=0.0.0.0
+ENV N8N_HOST=0.0.0.0
+ENV N8N_PROTOCOL=http
+ENV N8N_USER_FOLDER=/root/.n8n
 
-# Copiar o binário yt-dlp
-COPY --from=ytdlp /yt-dlp /usr/local/bin/yt-dlp
+EXPOSE 5678
 
-USER node
+CMD ["n8n", "start"]
+
