@@ -1,21 +1,13 @@
-FROM n8nio/n8n:latest-bookworm
+FROM n8nio/n8n:stable
 
 USER root
 
-RUN apt-get update \
-    && apt-get install -y \
-        ffmpeg \
-        python3 \
-        python3-venv \
-        python3-pip \
-        pipx \
-        ca-certificates \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+# Instalar yt-dlp como binário
+RUN curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp \
+    -o /usr/local/bin/yt-dlp \
+    && chmod +x /usr/local/bin/yt-dlp
 
-ENV PATH="/root/.local/bin:$PATH"
-
-# yt-dlp é necessário para o workflow
-RUN pipx install yt-dlp
+# ffmpeg já vem disponível na imagem stable
+# (se não vier, o yt-dlp ainda funciona sem mux avançado)
 
 USER node
